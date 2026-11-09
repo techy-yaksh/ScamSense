@@ -74,11 +74,11 @@ export function BriefingPage() {
           <div>
             <MetaLabel>Simulation status</MetaLabel>
             <p className="mt-3 font-display text-2xl text-ink">
-              Case loaded. Runtime ships in Phase 2.
+              Case ready. Simulation live.
             </p>
             <p className="mt-2 max-w-md text-sm leading-relaxed text-ink-soft">
-              This build verifies the case file, objectives, and navigation. The interactive
-              sequence arrives with the Phase 2 runtime — the button below leads to it.
+              Interactive training simulation is live for this case. Step into the exchange,
+              recognise the pressure mechanics, and test your decision-making.
             </p>
           </div>
           <PrimaryLink to={`/scenarios/${scenario.id}/simulation`} large>

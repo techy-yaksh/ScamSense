@@ -2,6 +2,7 @@ export type Difficulty = "Foundation" | "Intermediate" | "Advanced";
 
 export interface Scenario {
   id: string;
+  apiId?: string;
   code: string;
   title: string;
   category: string;

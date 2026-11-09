@@ -68,16 +68,16 @@ function MetaFooter() {
     <div className="mt-auto border-t border-line pt-6">
       <dl className="space-y-2 font-mono text-[10px] uppercase tracking-[0.18em] text-ink-faint">
         <div className="flex justify-between">
-          <dt>Build</dt>
-          <dd className="text-ink-soft">v0.1 · Phase 1</dd>
+          <dt>System</dt>
+          <dd className="text-ink-soft">ScamSense</dd>
         </div>
         <div className="flex justify-between">
-          <dt>Cases</dt>
-          <dd className="text-ink-soft">03 loaded</dd>
+          <dt>Case files</dt>
+          <dd className="text-ink-soft">03</dd>
         </div>
         <div className="flex justify-between">
-          <dt>Runtime</dt>
-          <dd className="text-ink-soft">stub · Phase 2</dd>
+          <dt>Mode</dt>
+          <dd className="text-ink-soft">Interactive</dd>
         </div>
       </dl>
     </div>

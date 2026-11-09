@@ -3,6 +3,7 @@ import type { Scenario } from "../types";
 export const scenarios: Scenario[] = [
   {
     id: "upi-banking-fraud",
+    apiId: "ss101",
     code: "SS-101",
     title: "UPI / Banking Fraud",
     category: "Financial",
@@ -24,6 +25,7 @@ export const scenarios: Scenario[] = [
   },
   {
     id: "digital-arrest",
+    apiId: "ss201",
     code: "SS-201",
     title: "Digital Arrest",
     category: "Law Enforcement Impersonation",
@@ -44,6 +46,7 @@ export const scenarios: Scenario[] = [
   },
   {
     id: "fake-job-internship",
+    apiId: "ss301",
     code: "SS-301",
     title: "Fake Job / Internship",
     category: "Employment",
@@ -69,4 +72,9 @@ export const featuredScenario: Scenario =
 
 export function getScenario(id: string | undefined): Scenario | undefined {
   return scenarios.find((s) => s.id === id);
+}
+
+export function getScenarioByApiId(apiId: string | undefined): Scenario | undefined {
+  if (!apiId) return undefined;
+  return scenarios.find((s) => s.apiId === apiId);
 }

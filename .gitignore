@@ -11,6 +11,14 @@ dist-ssr/
 .env.*
 !.env.example
 
+# Python
+__pycache__/
+*.pyc
+backend/.venv/
+*.db
+*.sqlite
+*.sqlite3
+
 # Logs
 logs/
 *.log
