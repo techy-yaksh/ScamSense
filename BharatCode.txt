@@ -1,0 +1,192 @@
+Project Name: ScamSense
+Submission Category: AI for Social Good / Cybersecurity Awareness
+Primary AI: BharatCode API — Qwen (qwen-3.8-27b)
+
+================================================================================
+PROBLEM
+================================================================================
+
+Social-engineering scams — UPI fraud, fake law-enforcement calls, fake job
+offers — succeed not because targets are uninformed but because the manipulation
+is experiential. A list of red flags does not prepare someone for the pressure
+of an actual call. By the time a person recognises what is happening, the
+psychological levers of urgency, authority, and fear have already engaged.
+
+Existing awareness material is passive: articles, videos, quizzes. None of it
+lets a person feel the sequence unfold, make decisions under pressure, and then
+see exactly where their reasoning held or broke.
+
+================================================================================
+WHAT SCAMSENSE DOES
+================================================================================
+
+ScamSense is an AI-powered social-engineering awareness simulator. Users engage
+in realistic fictional scam conversations from the perspective of the target.
+They respond naturally; the system tracks every decision against structured
+behavioural criteria; and at the end of each run, an evidence-backed after-
+action report shows precisely which manipulation techniques appeared, which were
+caught, and what the user actually said at each moment.
+
+The goal is not to test knowledge. It is to build pattern recognition under the
+conditions where it matters: an active, pressured conversation.
+
+================================================================================
+IMPLEMENTED SCENARIOS
+================================================================================
+
+SS-101 — UPI / Banking Fraud  (Difficulty: Intermediate, ~12 min)
+  A caller posing as a bank's UPI security desk fabricates an account freeze
+  threat and walks the user through a payment-verification sequence designed to
+  move money. Covers authority seeding, false urgency, verification pretexts,
+  the OTP-code trap, and a final standoff.
+
+SS-201 — Digital Arrest  (Difficulty: Advanced, ~10 min)
+  A caller impersonating an Economic Offences Wing investigator issues a
+  "digital arrest" on the grounds that criminal funds passed through the user's
+  account, then demands a release transfer to clear the case. Runs the full arc:
+  accusation, isolation/secrecy demand, intimidation, payment ask, and a final
+  pressure sequence.
+
+SS-301 — Fake Job / Internship  (Difficulty: Foundation, ~8 min)
+  A recruiter presents a pre-selected paid internship — no experience required,
+  flexible schedule. The sequence moves from flattery to registration fees, fake
+  onboarding steps, a personal-data harvest, and a fabricated deadline. Designed
+  as the recommended entry point for first-time users.
+
+================================================================================
+HOW THE ADAPTIVE AI SIMULATION WORKS
+================================================================================
+
+Each scenario is a controlled state machine. The engine owns stage progression,
+safety interrupts, and decision tracking — the AI does not control any of these.
+
+When BharatCode API (Qwen, qwen-3.8-27b) is configured, the following happens
+on every turn:
+
+  1. The user submits a response.
+  2. The scenario engine classifies the message against pattern triggers
+     (warning sign named? claim questioned? risky action attempted?), logs a
+     structured decision event, and advances or holds the stage.
+  3. The engine selects the stage objective and tactic, then builds a system
+     prompt for the current stage embedding: the stage objective, the
+     manipulation tactic in play, the full conversation history, and the user's
+     latest message.
+  4. The prompt is sent to the BharatCode API endpoint via HTTPX. The model
+     generates the caller's next line in character for that specific stage.
+  5. The response is sanitised before display: URLs are stripped and long digit
+     sequences are replaced with [withheld in training].
+  6. The caller line, any coach/safety notes, and the updated stage information
+     are returned to the frontend.
+
+The key design decision: BharatCode/Qwen writes only the caller's dialogue.
+Stage progression, event classification, and report generation are entirely
+deterministic and do not depend on the model's output.
+
+================================================================================
+DETERMINISTIC FALLBACK MECHANISM
+================================================================================
+
+All three scenarios include a full set of pre-written fallback lines per stage,
+keyed to how the user's last message was classified (questioned, aware,
+compliant, default). If the AI provider is unconfigured, unreachable, rate-
+limited, or returns an empty response, the engine selects the appropriate
+fallback line for the current stage and classification.
+
+The simulation is fully playable in fallback mode. Structured event tracking,
+decision logging, and report generation work identically in both modes.
+
+The after-action report records whether AI was active during the run so the user
+can distinguish AI-generated conversation from deterministic dialogue.
+
+Circuit-breaker: after two consecutive AI failures in a session, the engine
+marks that session as AI-down and uses fallback for all remaining turns,
+avoiding repeated failed network calls.
+
+================================================================================
+STRUCTURED DECISION TRACKING AND EVIDENCE-BACKED EVALUATION
+================================================================================
+
+This is the core differentiator from a basic chatbot interaction.
+
+Every user response is classified by the scenario engine against pattern
+triggers. Four event types are tracked:
+
+  - warning_sign_recognized  : user named or identified a manipulation tactic
+  - suspicious_claim_questioned : user challenged or asked to verify a claim
+  - risky_action_attempted    : user indicated compliance with a dangerous ask
+  - safe_decision             : user refused, challenged, or requested an
+                                official channel
+
+Events carry: type, label, verbatim excerpt from the user's message, turn
+number, and stage key.
+
+After the user ends the simulation, build_evaluation() computes five category
+scores entirely from these logged events — no AI judgement is applied at
+evaluation time:
+
+  Awareness         — whether manipulation patterns were named (not just avoided)
+  Recognition       — fraction of deployed techniques actively engaged
+  Questioning       — claims challenged and official verification paths chosen
+  Decision-making   — ratio of safe to risky choices across all stages
+  Pressure resistance — decisions specifically at the highest-pressure stages
+
+A blind-refusal cap is applied: a user who stayed safe without naming or
+questioning anything cannot outscore a user who engaged analytically.
+
+The after-action report presents:
+  - verbatim quotes from the user's own messages for every logged event
+  - the manipulation technique deployed at each stage and whether it was caught
+  - personalised recommendations derived from the specific gaps in that run
+  - a rating: Sharp eye / Solid instincts / Getting there / Needs training
+
+No figure in the report is invented or AI-generated. Every quote is a verbatim
+excerpt recorded at the moment the event fired.
+
+================================================================================
+TECHNOLOGY STACK
+================================================================================
+
+Frontend
+  React 19, TypeScript, Vite 6, Tailwind CSS 4, React Router 7, Lucide React
+
+Backend
+  Python, FastAPI, SQLite (stdlib), Pydantic v2, HTTPX, certifi
+
+AI
+  BharatCode API — Qwen model (qwen-3.8-27b)
+  OpenAI-compatible /chat/completions endpoint
+
+Data
+  SQLite database persists all simulation sessions and completed evaluations
+  locally. Completed runs are listed on a Progress page and remain accessible
+  as full intelligence reports after each session ends.
+
+================================================================================
+IMPACT AND USEFULNESS
+================================================================================
+
+ScamSense targets a gap that passive awareness campaigns cannot close: the
+difference between knowing what a scam looks like and recognising it while it
+is happening to you.
+
+  - The active format builds pattern recognition under conversational pressure,
+    not in a low-stakes reading environment.
+  - Three distinct scenario categories cover the most prevalent social-
+    engineering families reported in India: financial fraud, law-enforcement
+    impersonation, and fake employment.
+  - Evidence-backed debriefs give users a specific, actionable record of where
+    their responses engaged with the manipulation and where they did not — more
+    informative than a pass/fail score.
+  - The deterministic fallback means the tool works without any network
+    dependency in constrained environments.
+  - All content is fictional. No real credentials, accounts, payments, or
+    personal data are involved at any point.
+
+================================================================================
+DISCLAIMER
+================================================================================
+
+All scenarios are entirely fictional educational simulations. ScamSense does not
+detect, prevent, or protect against real scams on external platforms. It does
+not collect, transmit, or store any real personal or financial information.
+Simulation data is stored locally in a SQLite file on the user's own machine.
