@@ -47,16 +47,23 @@ def ai_chat(cfg: dict, system: str, user: str, history: list[dict]) -> str | Non
             json={
                 "model": cfg["model"],
                 "messages": messages,
-                "max_tokens": 220,
+                "max_tokens": 2048,
                 "temperature": 0.7,
             },
             verify=ssl_ctx,
-            timeout=20.0,
+            timeout=45.0,
         )
         resp.raise_for_status()
         data = resp.json()
         content = data["choices"][0]["message"]["content"]
-        return (content or "").strip() or None
+        text = (content or "").strip()
+        if not text:
+            logger.warning(
+                "AI provider returned empty message content (finish_reason=%s); using deterministic fallback",
+                data["choices"][0].get("finish_reason"),
+            )
+            return None
+        return text
     except ssl.SSLError as exc:
         logger.warning("AI provider SSL certificate verification failed: %s", exc)
         return None

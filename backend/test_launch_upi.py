@@ -50,7 +50,11 @@ check("slug start stage is opening", slug.get("stage", {}).get("key") == "openin
 status, direct = call("POST", "/api/simulations", {"scenario_id": "ss101"})
 check("start via ss101 200", status == 200, f"got {status}")
 
-status, _ = call("POST", "/api/simulations", {"scenario_id": "digital-arrest"})
+status, da = call("POST", "/api/simulations", {"scenario_id": "digital-arrest"})
+check("digital-arrest slug now resolves to ss201",
+      status == 200 and da.get("scenario_id") == "ss201", f"got {status} {da.get('scenario_id')}")
+
+status, _ = call("POST", "/api/simulations", {"scenario_id": "ss999"})
 check("unsupported scenario 404", status == 404, f"got {status}")
 
 # The slug-started session must be fully playable

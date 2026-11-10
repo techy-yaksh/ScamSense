@@ -133,9 +133,11 @@ def send_message(sid: str, req: MessageRequest):
     ai_text = None
     cfg = ai_config()
     if cfg is not None and not session.ai_down:
+        # The current user message was just appended to the transcript and is sent as the
+        # final turn by ai_chat(); exclude it here so it is not duplicated.
         history = [
             {"role": "assistant" if m["role"] == "caller" else "user", "content": m["text"]}
-            for m in session.transcript
+            for m in session.transcript[:-1]
             if m["role"] in ("caller", "user")
         ]
         ai_text = ai_chat(

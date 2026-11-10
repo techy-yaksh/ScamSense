@@ -24,10 +24,10 @@ export function Composer({
     <form onSubmit={handleSubmit} className="mt-4 border border-line bg-surface/50">
       <div className="flex items-center justify-between border-b border-line/60 px-4 py-2 bg-surface/30">
         <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink-faint">
-          Operator Console // Transmission Channel
+          Your Response
         </span>
         <span className="font-mono text-[10px] text-ink-faint">
-          {draft.length > 0 ? `${draft.length}/600 chars` : "[Enter to transmit]"}
+          {draft.length > 0 ? `${draft.length}/600 chars` : "Press Enter to send"}
         </span>
       </div>
 
