@@ -1,147 +1,415 @@
 # ScamSense
 
-> **A realistic, interactive fraud awareness and scenario simulation platform.**
-
-ScamSense is an open-source training and simulation environment designed to expose the psychological levers and tactical sequences behind modern cyber scams. Rather than lecturing users on generic safety advice, ScamSense deconstructs real-world attacks—allowing individuals to analyze, experience, and recognize red flags in controlled, interactive scenarios.
+**Social-engineering awareness training through controlled, evidence-backed simulations.**
 
 ---
 
-## 🎯 Purpose & Philosophy
+## Overview
 
-Modern scams do not succeed by exploiting software flaws; they succeed by exploiting human psychology—urgency, authority, social isolation, and financial anxiety. 
+Scammers are not random. They follow patterns — urgency, authority, isolation, flattery — that work precisely because they target normal human responses rather than technical knowledge. Recognising a pattern in the moment it appears is a practised skill, not an instinct.
 
-ScamSense provides an immersive, briefing-first framework that breaks down:
-- **Manipulation Levers:** How threat actors manufacture artificial urgency and leverage authority.
-- **De-escalation Habits:** Practical cognitive checkpoints to pause, verify, and dismantle fraudulent sequences.
-- **Actionable Debriefs:** High-resolution post-session analysis measuring pattern recognition and cognitive resilience.
+ScamSense puts you on the receiving end of realistic, fictional scam conversations so you can build that skill before the real call arrives. Each simulation runs a scripted social-engineering sequence; you respond naturally; the engine tracks your decisions, names the manipulation techniques deployed against you, and produces an evidence-backed debrief that shows exactly where your reasoning held and where it was pressed.
 
----
-
-## 🚀 Key Features
-
-- **📑 Case Briefings (`/scenarios/:id`):** Thorough dossiers on attack vectors, tactics, timelines, and specific objectives before stepping into simulation.
-- **⚡ Interactive Simulation Bay (`/scenarios/:id/simulation`):** Realistic runtime environment simulating chat feeds, interactive phone sequences, payment traps, and social engineering arcs.
-- **📊 Progress & Performance Dashboard (`/progress`):** Track completed simulations, recognition accuracy scores, active streaks, and recent case activity.
-- **🧭 Scenario Library (`/scenarios`):** Categorized by domain (Financial, Law Enforcement Impersonation, Employment) and difficulty level (*Foundation*, *Intermediate*, *Advanced*).
-- **🎨 Minimalist, Editorial UI:** Engineered with custom typography, clean telemetry styling, high contrast, and dark mode ergonomics.
+Nothing in ScamSense is real. No actual bank, payment, arrest, or employer is involved. All scenarios are fictional educational simulations.
 
 ---
 
-## 🛡️ Current Scenarios
+## Why It Matters
 
-| Code | Title | Category | Difficulty | Est. Time | Focus Area |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **SS-101** | **UPI / Banking Fraud** | Financial | `Intermediate` | 12 min | Payment-link pressure sequences, fake support fee waivers, account freeze threats. |
-| **SS-201** | **Digital Arrest** | Law Enforcement Impersonation | `Advanced` | 10 min | Video call intimidation, fake warrants, demands for secrecy, fabricated bail transfers. |
-| **SS-301** | **Fake Job / Internship** | Employment | `Foundation` | 8 min | Task-scam mechanics, "pre-selected" offers, out-of-pocket activation and review fees. |
+Most awareness training is passive — a list of red flags, a video, a quiz. It tells you what to watch for but not how it feels when it is happening to you. The gap between *knowing* and *recognising in the moment* is where scammers operate.
 
----
+ScamSense closes that gap by making the experience active:
 
-## 🛠️ Tech Stack
-
-- **Framework:** [React 19](https://react.dev/)
-- **Build Tool:** [Vite 6](https://vite.dev/)
-- **Language:** [TypeScript](https://www.typescriptlang.org/)
-- **Styling:** [Tailwind CSS v4](https://tailwindcss.com/) via `@tailwindcss/vite`
-- **Routing:** [React Router v7](https://reactrouter.com/)
-- **Icons:** [Lucide React](https://lucide.dev/)
+- You receive the message, not a description of it.
+- You respond, and the caller adapts.
+- The debrief shows your actual decisions, not ideal ones.
 
 ---
 
-## 📁 Project Structure
+## Features
 
-```text
-ScamSense/
-├── public/                 # Static assets
-├── src/
-│   ├── components/         # Reusable UI components
-│   │   ├── AppShell.tsx    # Global layout shell with navigation
-│   │   ├── Cta.tsx         # Action buttons and links
-│   │   ├── Meta.tsx        # Telemetry and metadata badges
-│   │   ├── PageHeader.tsx  # Consistent page headers
-│   │   ├── ProgressBar.tsx # Visual completion bar
-│   │   ├── ScenarioRow.tsx # Scenario list row item
-│   │   ├── SectionHeader.tsx# Section heading divider
-│   │   ├── Sidebar.tsx     # Responsive navigation sidebar
-│   │   └── Stat.tsx        # Metrics display tile
-│   ├── data/               # Scenario definitions and mock progress data
-│   │   ├── demo.ts         # User statistics and activity history
-│   │   └── scenarios.ts    # Comprehensive scenario repository
-│   ├── pages/              # Application route views
-│   │   ├── BriefingPage.tsx    # Case overview & tactical breakdown
-│   │   ├── OverviewPage.tsx    # User dashboard and featured case
-│   │   ├── ProgressPage.tsx    # Completion logs & metrics
-│   │   ├── ScenariosPage.tsx   # All scenario listings
-│   │   └── SimulationPage.tsx  # Runtime simulation bay
-│   ├── App.tsx             # Route declarations
-│   ├── index.css           # Tailwind v4 configuration & theme variables
-│   ├── main.tsx            # Application entry point
-│   └── types.ts            # Core TypeScript interfaces & types
-├── index.html              # HTML shell
-├── package.json            # Dependencies and scripts
-├── tsconfig.json           # TypeScript configuration
-└── vite.config.ts          # Vite build configuration
+- **Three interactive scenarios** covering distinct social-engineering categories.
+- **Adaptive caller dialogue** — when an AI provider is configured the caller's lines are generated by a language model; without one, a deterministic fallback engine runs the conversation. Both paths are fully playable.
+- **Structured decision tracking** — every response you send is classified against pattern-matched triggers for warning-sign recognition, suspicious-claim questioning, safe decisions, and risky actions.
+- **Five-category evaluation** at the end of each run:
+  - Awareness (naming manipulation patterns)
+  - Recognition (how many deployed techniques you engaged)
+  - Questioning (challenging claims and verifying channels)
+  - Decision-making (safe vs. risky choices across the run)
+  - Pressure resistance (performance at the highest-pressure stages)
+- **Evidence-backed after-action reports** — every score is derived from logged events; the report quotes your actual messages, not summaries.
+- **Persistent history** — completed simulations are stored in a local SQLite database and surfaced on the Progress page.
+- **Safety interrupts** — if you type sensitive-looking data (long digit strings, card-number patterns) the engine halts the line, logs a risky decision, and issues a training note.
+
+---
+
+## Scenarios
+
+### SS-101 — UPI / Banking Fraud
+**Category:** Financial · **Difficulty:** Intermediate · **~12 minutes**
+
+A payment-link pressure sequence: a calm "support agent", a fabricated fee waiver, and a countdown to move money before your account is "frozen". Covers authority seeding, false urgency, verification pretexts, the OTP-code trap, and the standoff when you push back.
+
+### SS-201 — Digital Arrest
+**Category:** Law Enforcement Impersonation · **Difficulty:** Advanced · **~10 minutes**
+
+A fake enforcement officer "digitally arrests" you for funds that passed through your account, then demands a release transfer to clear the case. Runs the full arc: accusation, isolation, intimidation, the payment ask, and a final-pressure standoff.
+
+### SS-301 — Fake Job / Internship
+**Category:** Employment · **Difficulty:** Foundation · **~8 minutes**
+
+An offer that is too clean — a "pre-selected" internship with no experience required. The sequence moves from flattery to registration fees, fake onboarding, a data harvest, and a fabricated deadline. A good first run for new users.
+
+---
+
+## How the Simulation Works
+
+```
+You type a response
+        │
+        ▼
+Scenario engine classifies the message against pattern triggers
+        │
+        ├─ Logs events (warning_sign_recognized, risky_action_attempted, safe_decision, …)
+        ├─ Advances or holds the stage
+        ├─ Selects a fallback caller line for this stage
+        │
+        ▼
+If an AI provider is configured:
+   Language model receives the system prompt (stage + history), generates the caller's line
+   Fallback is used if the model is unreachable or returns an empty response
+        │
+        ▼
+AI output is sanitised (URLs stripped, long digit runs replaced with [withheld in training])
+        │
+        ▼
+Caller line + any coach/safety notes returned to the UI
+```
+
+Stage progression, event logging, and safety interrupts all live in the scenario engine. The language model, when active, only writes the caller's dialogue for the stage the engine has already chosen.
+
+### Evaluation
+
+Scores are computed entirely from logged events — no AI judgement is applied at evaluation time.
+
+| Category | What it measures |
+|---|---|
+| Awareness | Whether you explicitly named a manipulation pattern |
+| Recognition | Fraction of deployed techniques you engaged (named or questioned) |
+| Questioning | Claims challenged and official verification paths committed to |
+| Decision-making | Ratio of safe decisions to risky actions across all stages |
+| Pressure resistance | Decisions specifically at high-pressure stages |
+
+A run with safe decisions but no naming or questioning is capped, so blind refusal cannot outscore a reasoned read.
+
+Ratings: **Sharp eye** (≥ 80) · **Solid instincts** (≥ 60) · **Getting there** (≥ 40) · **Needs training** (< 40)
+
+---
+
+## Technology Stack
+
+| Layer | Technology |
+|---|---|
+| Frontend framework | React 19 + TypeScript |
+| Build tool | Vite 6 |
+| Styling | Tailwind CSS 4 |
+| Routing | React Router 7 |
+| Icons | Lucide React |
+| Backend framework | FastAPI (Python) |
+| Data persistence | SQLite (stdlib `sqlite3`) |
+| Schema validation | Pydantic v2 |
+| HTTP client | HTTPX |
+| SSL trust | Python `ssl` + `certifi` |
+| AI provider | Any OpenAI-compatible endpoint (BharatCode / Qwen by default) |
+
+---
+
+## Architecture
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  Browser                                                     │
+│                                                              │
+│  React SPA (Vite)                                            │
+│  ├── OverviewPage      — landing and live report stats       │
+│  ├── ScenariosPage     — scenario catalogue                  │
+│  ├── BriefingPage      — case dossier before entering        │
+│  ├── SimulationPage    — live forensic intercept console     │
+│  ├── ProgressPage      — history of completed runs           │
+│  └── ReportPage        — after-action intelligence report    │
+└───────────────────────────┬─────────────────────────────────┘
+                            │  HTTP (fetch / JSON)
+                            ▼
+┌─────────────────────────────────────────────────────────────┐
+│  FastAPI  (uvicorn, port 8000)                               │
+│                                                              │
+│  main.py          — routes and session orchestration         │
+│  scenarios/       — SS-101, SS-201, SS-301 state machines    │
+│  evaluation.py    — deterministic scoring from logged events │
+│  ai_provider.py   — OpenAI-compatible chat completion        │
+│  db.py            — SQLite persistence                       │
+│  store.py         — in-memory session cache                  │
+│  models.py        — Pydantic schemas                         │
+└───────────────────────────┬─────────────────────────────────┘
+                            │  Optional: HTTPS
+                            ▼
+                 AI provider endpoint
+            (any OpenAI-compatible API)
 ```
 
 ---
 
-## 🚦 Getting Started
+## Project Structure
+
+```
+ScamSense/
+├── backend/
+│   ├── scenarios/
+│   │   ├── __init__.py        # scenario registry + slug aliases
+│   │   ├── ss101.py           # UPI / Banking Fraud state machine
+│   │   ├── ss201.py           # Digital Arrest state machine
+│   │   └── ss301.py           # Fake Job / Internship state machine
+│   ├── ai_provider.py         # OpenAI-compatible chat client
+│   ├── db.py                  # SQLite persistence
+│   ├── evaluation.py          # after-action report generation
+│   ├── main.py                # FastAPI application
+│   ├── models.py              # Pydantic request/response schemas
+│   ├── store.py               # in-memory session cache
+│   ├── requirements.txt
+│   ├── .env.example           # AI provider configuration template
+│   ├── test_phase4.py         # scenario engine tests (66 cases)
+│   ├── test_flow.py           # API integration tests (30 cases)
+│   ├── test_reports.py        # persistence and report tests (17 cases)
+│   └── test_ai_fallback.py    # fallback behaviour tests (10 cases)
+│
+├── src/
+│   ├── components/
+│   │   ├── simulation/
+│   │   │   ├── Composer.tsx       # operator transmission input
+│   │   │   ├── Transcript.tsx     # forensic intercept log
+│   │   │   ├── ProgressPanel.tsx  # live stage tracker
+│   │   │   └── ReportView.tsx     # evaluation display
+│   │   ├── AppShell.tsx
+│   │   ├── Sidebar.tsx
+│   │   └── ...
+│   ├── lib/
+│   │   └── api.ts             # typed fetch wrappers for the backend API
+│   ├── pages/
+│   │   ├── OverviewPage.tsx
+│   │   ├── ScenariosPage.tsx
+│   │   ├── BriefingPage.tsx
+│   │   ├── SimulationPage.tsx
+│   │   ├── ProgressPage.tsx
+│   │   └── ReportPage.tsx
+│   ├── data/
+│   │   └── scenarios.ts       # frontend scenario metadata
+│   ├── types.ts
+│   ├── App.tsx
+│   └── main.tsx
+│
+├── index.html
+├── vite.config.ts
+├── tsconfig.json
+├── package.json
+├── .env.example               # frontend environment template
+└── README.md
+```
+
+---
+
+## Local Setup (Windows)
 
 ### Prerequisites
 
-Ensure you have **Node.js (v18+)** and **npm** installed.
+- **Node.js** 20 or later — [nodejs.org](https://nodejs.org)
+- **Python** 3.11 or later — [python.org](https://www.python.org)
+- **Git**
 
-```bash
-node -v
-npm -v
+### 1. Clone the repository
+
+```powershell
+git clone https://github.com/techy-yaksh/ScamSense.git
+cd ScamSense
 ```
 
-### Installation
+### 2. Backend setup
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/techy-yaksh/ScamSense.git
-   cd ScamSense
-   ```
+```powershell
+cd backend
 
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
+# Create a virtual environment
+python -m venv .venv
 
-3. Start the local development server:
-   ```bash
-   npm run dev
-   ```
+# Activate it
+.\.venv\Scripts\Activate.ps1
 
-4. Open your browser and navigate to `http://localhost:5173`.
+# Install dependencies
+pip install -r requirements.txt
+```
+
+#### Configure the AI provider (optional)
+
+Copy the example file and fill in your credentials if you want AI-generated caller lines. The simulation is fully playable without this step — the deterministic fallback engine runs all three scenarios without any network calls.
+
+```powershell
+copy .env.example .env
+```
+
+Open `backend/.env` and set the three variables:
+
+```
+AI_BASE_URL=https://your-openai-compatible-endpoint/v1
+AI_API_KEY=your_api_key_here
+AI_MODEL=your_model_name_here
+```
+
+Leave all three blank or absent to run in deterministic fallback mode.
+
+#### Start the backend server
+
+```powershell
+# From the backend/ directory, with .venv activated
+uvicorn main:app --reload --port 8000
+```
+
+The API will be available at `http://localhost:8000`. The interactive docs are at `http://localhost:8000/docs`.
+
+### 3. Frontend setup
+
+Open a new terminal in the project root.
+
+```powershell
+npm install
+```
+
+#### Frontend environment (optional)
+
+The frontend reads `VITE_API_BASE_URL` to locate the backend. If the backend runs on the default port you do not need to set this.
+
+```powershell
+copy .env.example .env
+```
+
+The `.env.example` at the project root documents the available variables. The default backend URL is `http://localhost:8000`.
+
+#### Start the development server
+
+```powershell
+npm run dev
+```
+
+The app opens at `http://localhost:5173`.
 
 ---
 
-## 📜 Available Scripts
+## Running the Application
 
-- `npm run dev` — Starts the Vite development server with Hot Module Replacement (HMR).
-- `npm run build` — Runs the TypeScript type-checker (`tsc --noEmit`) and compiles the production bundle.
-- `npm run preview` — Locally previews the built production output.
+Both servers must be running simultaneously:
 
----
+| Terminal | Command | URL |
+|---|---|---|
+| Backend | `uvicorn main:app --reload --port 8000` (from `backend/`, venv active) | `http://localhost:8000` |
+| Frontend | `npm run dev` (from project root) | `http://localhost:5173` |
 
-## 🗺️ Roadmap
-
-- [x] **Phase 1: Foundation (Current)**
-  - Core routing and responsive editorial UI architecture.
-  - Case metadata schema and initial scenario briefings (UPI, Digital Arrest, Fake Job).
-  - Telemetry and progress tracking views.
-- [ ] **Phase 2: Simulation Engine**
-  - Branching decision trees with realistic dynamic chat/SMS/call interfaces.
-  - Time-pressured prompt mechanics and deceptive audio/visual cues.
-  - Granular post-scenario cognitive debriefing and scoring.
-- [ ] **Phase 3: Community & Custom Cases**
-  - Schema for user-contributed scam transcripts.
-  - Multilingual support for localized scam scripts.
+Navigate to `http://localhost:5173` in your browser.
 
 ---
 
-## 📄 License
+## API Endpoints
 
-This project is licensed under the [MIT License](LICENSE).
+| Method | Path | Description |
+|---|---|---|
+| `GET` | `/api/health` | Server status and AI provider configuration |
+| `POST` | `/api/simulations` | Start a new simulation (`scenario_id` in body) |
+| `POST` | `/api/simulations/{id}/messages` | Send a message and receive the caller's reply |
+| `POST` | `/api/simulations/{id}/end` | End the simulation and generate the evaluation |
+| `GET` | `/api/simulations/{id}` | Fetch a simulation's transcript and state |
+| `GET` | `/api/simulations/{id}/evaluation` | Fetch the completed evaluation |
+| `GET` | `/api/reports` | List all completed simulations, newest first |
+
+Scenario IDs accepted: `ss101`, `ss201`, `ss301` (or slugs `upi-banking-fraud`, `digital-arrest`, `fake-job-internship`).
+
+---
+
+## Running Tests
+
+With the virtual environment active, from the `backend/` directory:
+
+```powershell
+# Full scenario engine — 66 tests
+python -m pytest test_phase4.py -v
+
+# API integration — 30 tests
+python -m pytest test_flow.py -v
+
+# SQLite persistence and report retrieval — 17 tests
+python -m pytest test_reports.py -v
+
+# AI fallback behaviour — 10 tests
+python -m pytest test_ai_fallback.py -v
+```
+
+The test suites do not require an AI provider to be configured and do not make real network calls.
+
+---
+
+## Production Build
+
+```powershell
+npm run build
+```
+
+This runs `tsc --noEmit` (TypeScript check) followed by `vite build`. Output is written to `dist/`.
+
+---
+
+## Environment Variables Reference
+
+### `backend/.env`
+
+| Variable | Required for AI | Description |
+|---|---|---|
+| `AI_BASE_URL` | Yes | Base URL of an OpenAI-compatible `/chat/completions` endpoint |
+| `AI_API_KEY` | Yes | API key or bearer token |
+| `AI_MODEL` | Yes | Model identifier (e.g. `qwen-3.8-27b`) |
+
+All three must be set to enable AI generation. If any is absent, the backend starts in deterministic fallback mode.
+
+### `.env` (project root, frontend)
+
+| Variable | Default | Description |
+|---|---|---|
+| `VITE_API_BASE_URL` | `http://localhost:8000` | Backend API base URL |
+
+---
+
+## Safety and Educational Disclaimer
+
+ScamSense is a training tool. Every scenario is entirely fictional.
+
+- No real bank, payment gateway, government agency, employer, or financial account is involved.
+- No real money is transferred or requested at any point.
+- No real personal, account, or authentication credentials are collected or used.
+- ScamSense does not detect, prevent, or protect against real scams on external platforms.
+- Simulation transcripts and decisions are stored locally in a SQLite file on your own machine and are not transmitted anywhere.
+
+The scenarios are designed to surface the patterns used by real social-engineering attacks so users can recognise them. They are not a substitute for official guidance from your bank or financial institution.
+
+---
+
+## Roadmap
+
+The following areas are candidates for future development. None are currently implemented.
+
+- **Pass C refinement** — briefing page case-dossier taxonomy and report exhibit hierarchy.
+- **Additional scenarios** — SIM-swap fraud, parcel/customs scam, romance-baiting onboarding.
+- **Multi-language support** — Hindi and other regional-language caller dialogue.
+- **Scenario authoring interface** — a structured way to add new patterns without writing Python directly.
+- **Keyboard-only accessibility** — full keyboard navigation and screen-reader annotations.
+- **Export** — PDF or JSON export of completed after-action reports.
+
+---
+
+## License
+
+See [LICENSE](LICENSE).
